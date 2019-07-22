@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour
     public Text typedText;
     public Text untypedText;
     public Rigidbody2D player;
+    public PlayerController playerController;
     public int jumpSpeed;
 
     private string typedChars;
@@ -114,7 +115,9 @@ public class GameManager : MonoBehaviour
 
                             if(keyToChar == ' ')
                             {
-                                player.AddForce(Vector2.up * jumpSpeed, ForceMode2D.Impulse);
+
+                                //player.AddForce(Vector2.up * jumpSpeed, ForceMode2D.Impulse);
+                                playerController.canJump = true;
                             }
                         }
                     }
