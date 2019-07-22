@@ -2710,7 +2710,7 @@ MonoBehaviour:
   playerRB: {fileID: 1881821744}
   playerCollider: {fileID: 1881821747}
   groundCollider: {fileID: 2117677899}
-  moveSpeed: 0.1
+  moveSpeed: 5
   jumpHeight: 5
 --- !u!1 &1996345478
 GameObject:

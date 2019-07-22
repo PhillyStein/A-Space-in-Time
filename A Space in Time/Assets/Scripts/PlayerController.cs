@@ -34,21 +34,29 @@ public class PlayerController : MonoBehaviour
             isJumping = false;
         }
         
-        if(!isFalling || (isJumping && isFalling))
+        //if(!isFalling)
+        
+        //{
+            targetPos = new Vector2(transform.position.x + moveSpeed * Time.deltaTime, transform.position.y);
+            transform.position = targetPos;
+        //}
+
+        if(isFalling && isJumping)
         {
-            targetPos = new Vector2(transform.position.x + moveSpeed, transform.position.y);
+            targetPos = new Vector2(transform.position.x + moveSpeed * Time.deltaTime, transform.position.y);
             transform.position = targetPos;
         }
 
         if(canJump)
         {
             //canMove = false;
-            canJump = false;
             if (playerRB.velocity.y == 0)
             {
+                canJump = false;
                 isJumping = true;
-                playerRB.velocity = new Vector2(moveSpeed*jumpHeight, jumpHeight);
-                //playerRB.AddForce(Vector2.up * jumpHeight, ForceMode2D.Impulse);
+                //playerRB.velocity = new Vector2(moveSpeed * jumpHeight * Time.deltaTime, jumpHeight);
+               
+                playerRB.AddForce(Vector2.up * jumpHeight, ForceMode2D.Impulse);
             }
             
             //playerRB.AddForce(Vector2.up * jumpHeight, ForceMode2D.Impulse);
