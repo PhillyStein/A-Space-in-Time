@@ -14,7 +14,8 @@ public class GameManager : MonoBehaviour
     public PlayerController playerController;
 
     public int jumpSpeed,
-                points = 0;
+                points = 0,
+                lives = 3;
 
     private string typedChars,
                     untypedChars,
@@ -31,6 +32,8 @@ public class GameManager : MonoBehaviour
     private char keyToChar,
                  currentChar;
 
+    public Image[] hearts;
+
 
     private KeyCode[] keyCodes = {KeyCode.A, KeyCode.B, KeyCode.C, KeyCode.D, KeyCode.E, KeyCode.F, KeyCode.G, KeyCode.H, KeyCode.I,
                                     KeyCode.J, KeyCode.K, KeyCode.L, KeyCode.M, KeyCode.N, KeyCode.O, KeyCode.P, KeyCode.Q, KeyCode.R,
@@ -40,7 +43,7 @@ public class GameManager : MonoBehaviour
     private char[] charArray = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N',
                                 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', ' ', ',', '.', '!'};
 
-    private string[] sentences = { "And so, the adventure begins.", "It was a dark and stormy night.", "There were pigeons and shit.", "Not today, Satan. Not today!" };
+    private string[] sentences = { "And so, the adventure begins.", "It was a dark and stormy night.", "There were pigeons and shit.", "Not today, Satan. Not today." };
 
     // Start is called before the first frame update
     void Start()
@@ -76,6 +79,13 @@ public class GameManager : MonoBehaviour
         {
             OnGUI();
         }
+
+        if(Input.GetKeyUp(KeyCode.Alpha1) && lives > 0)
+        {
+            lives--;
+        }
+
+        UpdateHearts();
 
         pointsText.text = points.ToString();
     }
@@ -147,5 +157,20 @@ public class GameManager : MonoBehaviour
             }
         }
         return false;
+    }
+
+    public void UpdateHearts()
+    {
+        for(int i = 0; i < 3; i++)
+        {
+            hearts[i].gameObject.SetActive(false);
+        }
+
+        /* Uncomment this to add lives
+        for(int i = 0; i < lives; i++)
+        {
+            hearts[i].gameObject.SetActive(true);
+        }
+        */
     }
 }
