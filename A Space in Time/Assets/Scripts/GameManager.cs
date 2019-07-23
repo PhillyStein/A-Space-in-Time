@@ -5,28 +5,32 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
-    public Text typedText;
-    public Text untypedText;
+    public Text typedText,
+                untypedText,
+                pointsText;
+
     public Rigidbody2D player;
+
     public PlayerController playerController;
-    public int jumpSpeed;
 
-    private string typedChars;
-    private string untypedChars;
+    public int jumpSpeed,
+                points = 0;
 
-    private int typedCharsSize;
-    private int untypedCharsSize;
+    private string typedChars,
+                    untypedChars,
+                    upperCaseText;
 
-    private string upperCaseText;
-    private char currentChar;
+    private int typedCharsSize,
+                untypedCharsSize,
+                keyPos,
+                sentenceNum;
 
-    public KeyCode keyPressed;
-    private KeyCode keyToPress;
+    public KeyCode keyPressed,
+                    keyToPress;
+    
+    private char keyToChar,
+                 currentChar;
 
-    private int keyPos;
-    private char keyToChar;
-
-    private int sentenceNum;
 
     private KeyCode[] keyCodes = {KeyCode.A, KeyCode.B, KeyCode.C, KeyCode.D, KeyCode.E, KeyCode.F, KeyCode.G, KeyCode.H, KeyCode.I,
                                     KeyCode.J, KeyCode.K, KeyCode.L, KeyCode.M, KeyCode.N, KeyCode.O, KeyCode.P, KeyCode.Q, KeyCode.R,
@@ -72,6 +76,8 @@ public class GameManager : MonoBehaviour
         {
             OnGUI();
         }
+
+        pointsText.text = points.ToString();
     }
 
 
@@ -84,7 +90,7 @@ public class GameManager : MonoBehaviour
             {
                 keyPressed = e.keyCode;
 
-                if (containsKey(keyPressed))
+                if (containsKey(keyPressed) && !playerController.isFalling)
                 {
 
                     keyPos = System.Array.IndexOf(keyCodes, keyPressed);
@@ -100,6 +106,7 @@ public class GameManager : MonoBehaviour
                             untypedChars = untypedChars.Substring(1, untypedChars.Length - 1);
 
                             upperCaseText = untypedChars.ToUpper();
+
                             if (upperCaseText.Length > 0)
                             {
                                 currentChar = upperCaseText[0];
@@ -118,6 +125,10 @@ public class GameManager : MonoBehaviour
 
                                 //player.AddForce(Vector2.up * jumpSpeed, ForceMode2D.Impulse);
                                 playerController.canJump = true;
+                                points += 100;
+                            } else
+                            {
+                                points += 10;
                             }
                         }
                     }
