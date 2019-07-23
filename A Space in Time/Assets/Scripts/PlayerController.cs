@@ -19,6 +19,8 @@ public class PlayerController : MonoBehaviour
     public float moveSpeed,
                 jumpHeight;
 
+    public GameObject ground;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -37,14 +39,14 @@ public class PlayerController : MonoBehaviour
         //if(!isFalling)
         
         //{
-            targetPos = new Vector2(transform.position.x + moveSpeed * Time.deltaTime, transform.position.y);
-            transform.position = targetPos;
+            targetPos = new Vector2(ground.transform.position.x - moveSpeed * Time.deltaTime, ground.transform.position.y);
+            ground.transform.position = targetPos;
         //}
 
         if(isFalling && isJumping)
         {
-            targetPos = new Vector2(transform.position.x + moveSpeed * Time.deltaTime, transform.position.y);
-            transform.position = targetPos;
+            targetPos = new Vector2(ground.transform.position.x - moveSpeed * Time.deltaTime, ground.transform.position.y);
+            ground.transform.position = targetPos;
         }
 
         if(canJump)
@@ -62,7 +64,7 @@ public class PlayerController : MonoBehaviour
             //playerRB.AddForce(Vector2.up * jumpHeight, ForceMode2D.Impulse);
         }
 
-        if(playerRB.velocity.y < 0)
+        if(playerRB.velocity.y < 0 && playerRB.position.y < -1.5f)
         {
             isFalling = true;
         } else
