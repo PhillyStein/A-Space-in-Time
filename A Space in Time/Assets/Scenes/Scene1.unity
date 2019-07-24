@@ -12735,6 +12735,8 @@ MonoBehaviour:
   untypedText: {fileID: 1144790844}
   pointsText: {fileID: 721996545}
   finalText: {fileID: 120251973}
+  gameOverText: {fileID: 1262610038}
+  restartText: {fileID: 673457872}
   player: {fileID: 1881821744}
   playerController: {fileID: 1881821748}
   jumpSpeed: 5
@@ -14015,7 +14017,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1881821743}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.78, y: -0.21, z: 0}
+  m_LocalPosition: {x: -4.8, y: -0.21, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 519420032}

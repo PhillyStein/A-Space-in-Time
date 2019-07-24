@@ -17,23 +17,41 @@ public class PlayerController : MonoBehaviour
                         groundCollider;
 
     public float moveSpeed,
-                jumpHeight;
+                jumpHeight,
+                playerLag;
 
     public GameObject ground;
 
     private bool gameOver;
 
+    private Vector2 startPos;
+
+    public static PlayerController instance;
+
     // Start is called before the first frame update
     void Start()
     {
+        instance = this;
+
         gameOver = false;
+
+        playerLag = 0.00001f;
+
+        startPos = ground.transform.position;
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (playerRB.transform.position.x > -4.8f)
+        {
+            playerRB.transform.position = new Vector2(-4.8f, playerRB.transform.position.y);
+        }
 
-        this.transform.position = new Vector2(this.transform.position.x - 0.001f, this.transform.position.y);
+        if (!Input.anyKey)
+        {
+            this.transform.position = new Vector2(this.transform.position.x - playerLag, this.transform.position.y);
+        }
 
         if((playerRB.transform.position.y < -7.5 || playerRB.transform.position.x < -8.5) && !gameOver)
         {
@@ -41,7 +59,7 @@ public class PlayerController : MonoBehaviour
             GameManager.instance.GameOver();
         }
 
-        while (!gameOver)
+        if (!gameOver && !GameManager.instance.winState)
         {
             targetPos = new Vector2(ground.transform.position.x - moveSpeed * Time.deltaTime, ground.transform.position.y);
             ground.transform.position = targetPos;
@@ -75,6 +93,11 @@ public class PlayerController : MonoBehaviour
         {
             isFalling = false;
         }
+    
+    }
 
+    public void restartPlatforms()
+    {
+        ground.transform.position = new Vector2(playerRB.transform.position.x, startPos.y);
     }
 }

@@ -28,6 +28,7 @@ public class GameManager : MonoBehaviour
     private int typedCharsSize,
                 untypedCharsSize,
                 keyPos,
+                level,
                 sentenceNum;
 
     public KeyCode keyPressed,
@@ -38,8 +39,9 @@ public class GameManager : MonoBehaviour
 
     public Image[] hearts;
 
-    private bool gameOver,
-                    winState;
+    private bool gameOver;
+
+    public bool winState;
 
     public GameObject gameOverPanel,
                         groundGroup;
@@ -53,7 +55,12 @@ public class GameManager : MonoBehaviour
     private char[] charArray = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N',
                                 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', ' ', ',', '.', '!'};
 
-    private string[] sentences = { "And so, the adventure begins.", "It was a dark and stormy night." };
+    private string[][] sentences = new string[2][];
+
+    //private string[] levelOne = { "Level one is for kids", "It has easy words", "Like cat and dog", "If you fail on level one", "You are really bad", "You can not fail on level one", "I will tell everybody" },
+    private string[] levelOne = { "Level one is for kids" },
+                        levelTwo = { "Oh good", "You have made it", "This is level two", "Level two has full stops.", "Or periods.", "Whatever you call them.", "Level two has them.", "A lot of them.", "This is an ellipsis...", "People use them all the time.", "They use them incorrectly." },
+                        levelThree = { "That level was too easy.", "Here comes a comma.", "Commas are cool, I guess.", "I guess level three is about commas.", "We should probably have more.", "Well, pal, the problem is...", "...these sentences are not...", "...very long.", "They have to fit along", "the bottom, here.", "Otherwise, you would not see", "what you should be tpying." };
 
     public static GameManager instance;
 
@@ -61,14 +68,18 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         instance = this;
-
         gameOver = false;
         winState = false;
+
+        level = 0;
+
+        sentences[0] = levelOne;
+        sentences[1] = levelTwo;
 
         typedChars = "";
         typedText.text = typedChars;
         sentenceNum = 0;
-        untypedChars = sentences[sentenceNum];
+        untypedChars = sentences[0][0];
         untypedText.text = untypedChars;
         typedCharsSize = typedChars.Length;
         untypedCharsSize = untypedChars.Length;
@@ -139,20 +150,47 @@ public class GameManager : MonoBehaviour
                             if (upperCaseText.Length > 0)
                             {
                                 currentChar = upperCaseText[0];
-                            } else if(sentenceNum + 1 <= sentences.Length)
+                            } else if(sentenceNum + 1 <= sentences[level].Length)
                             {
                                 sentenceNum++;
-                                if (sentenceNum < sentences.Length)
+                                //playerController.playerRB.transform.position = new Vector2(playerController.playerRB.transform.position.x + 5, playerController.playerRB.transform.position.y);
+                                playerController.playerRB.transform.Translate(Vector2.right * 50 * Time.deltaTime, Space.World);
+
+                                if (sentenceNum < sentences[level].Length)
                                 {
-                                    untypedChars = sentences[sentenceNum];
+                                    untypedChars = sentences[level][sentenceNum];
                                 } else
                                 {
                                     // LEVEL COMPLETE!
+                                    /*
                                     finalText.text = "You scored " + points + " points.";
                                     gameOverText.text = "Congratulations. You have evaded the darkness.";
                                     restartText.text = "Press SPACE to continue.\nPress R to restart.";
                                     gameOverPanel.SetActive(true);
                                     winState = true;
+                                    */
+                                    level++;
+                                    if(level < sentences.Length)
+                                    {
+                                        sentenceNum = 0;
+                                        untypedChars = sentences[level][sentenceNum];
+
+                                        finalText.text = "You scored " + points + " points.";
+                                        
+                                        gameOverText.text = "Congratulations. You have reached level " + level + "." ;
+                                        restartText.text = "Press SPACE to continue.\nPress R to restart.";
+                                        gameOverPanel.SetActive(true);
+                                        winState = true;
+
+                                        playerController.playerLag *= 10;
+                                    } else
+                                    {
+                                        finalText.text = "You scored " + points + " points.";
+                                        gameOverText.text = "Congratulations. You have evaded the darkness.";
+                                        restartText.text = "Press SPACE to continue.\nPress R to restart.";
+                                        gameOverPanel.SetActive(true);
+                                        winState = true;
+                                    }
                                 }
                                 typedChars = "";
                             }
@@ -160,7 +198,7 @@ public class GameManager : MonoBehaviour
                             typedText.text = typedChars;
                             untypedText.text = untypedChars;
 
-                            if(keyToChar == ' ')
+                            if(keyPressed == KeyCode.Space)
                             {
                                 playerController.canJump = true;
                                 points += 100;
@@ -187,8 +225,9 @@ public class GameManager : MonoBehaviour
                     if (Input.GetKeyUp(KeyCode.Space))
                     {
                         //Go to next level
+                        playerController.restartPlatforms();
+                        gameOverPanel.SetActive(false);
                         winState = false;
-                        SceneManager.LoadScene("Scene1");
                     }
 
                 }
@@ -225,10 +264,13 @@ public class GameManager : MonoBehaviour
 
     public void GameOver()
     {
-        finalText.text = "You scored " + points + " points.";
-        gameOverText.text = "You have been consumed by the darkness.";
-        restartText.text = "Press R to restart.";
-        gameOverPanel.SetActive(true);
-        gameOver = true;
+        if (!winState)
+        {
+            finalText.text = "You scored " + points + " points.";
+            gameOverText.text = "You have been consumed by the darkness.";
+            restartText.text = "Press R to restart.";
+            gameOverPanel.SetActive(true);
+            gameOver = true;
+        }
     }
 }
