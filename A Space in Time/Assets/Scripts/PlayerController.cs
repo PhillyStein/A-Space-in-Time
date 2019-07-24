@@ -33,18 +33,19 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
 
-        if(playerRB.transform.position.y < -7.5 && !gameOver)
+        this.transform.position = new Vector2(this.transform.position.x - 0.001f, this.transform.position.y);
+
+        if((playerRB.transform.position.y < -7.5 || playerRB.transform.position.x < -8.5) && !gameOver)
         {
             gameOver = true;
             GameManager.instance.GameOver();
         }
-        
-        //if(!isFalling)
-        
-        //{
+
+        while (!gameOver)
+        {
             targetPos = new Vector2(ground.transform.position.x - moveSpeed * Time.deltaTime, ground.transform.position.y);
             ground.transform.position = targetPos;
-        //}
+        }
 
         if(isFalling && isJumping)
         {

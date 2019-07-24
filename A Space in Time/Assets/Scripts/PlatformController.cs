@@ -44,9 +44,9 @@ public class PlatformController : MonoBehaviour
                 newY = -3;
             }
 
-            newPlatform.transform.position = new Vector2(35.5f, newY);
+            newPlatform.transform.position = new Vector2(35f, newY);
             canRespawn = false;
-            DestroyObject(gameObject);
+            Destroy(gameObject);
         }
     }
 }

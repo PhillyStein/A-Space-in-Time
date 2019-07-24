@@ -9,7 +9,9 @@ public class GameManager : MonoBehaviour
     public Text typedText,
                 untypedText,
                 pointsText,
-                finalText;
+                finalText,
+                gameOverText,
+                restartText;
 
     public Rigidbody2D player;
 
@@ -36,7 +38,8 @@ public class GameManager : MonoBehaviour
 
     public Image[] hearts;
 
-    private bool gameOver;
+    private bool gameOver,
+                    winState;
 
     public GameObject gameOverPanel,
                         groundGroup;
@@ -50,7 +53,7 @@ public class GameManager : MonoBehaviour
     private char[] charArray = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N',
                                 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', ' ', ',', '.', '!'};
 
-    private string[] sentences = { "And so, the adventure begins.", "It was a dark and stormy night.", "There were pigeons and shit.", "Not today, Satan. Not today." };
+    private string[] sentences = { "And so, the adventure begins.", "It was a dark and stormy night." };
 
     public static GameManager instance;
 
@@ -60,6 +63,7 @@ public class GameManager : MonoBehaviour
         instance = this;
 
         gameOver = false;
+        winState = false;
 
         typedChars = "";
         typedText.text = typedChars;
@@ -144,6 +148,11 @@ public class GameManager : MonoBehaviour
                                 } else
                                 {
                                     // LEVEL COMPLETE!
+                                    finalText.text = "You scored " + points + " points.";
+                                    gameOverText.text = "Congratulations. You have evaded the darkness.";
+                                    restartText.text = "Press SPACE to continue.\nPress R to restart.";
+                                    gameOverPanel.SetActive(true);
+                                    winState = true;
                                 }
                                 typedChars = "";
                             }
@@ -153,8 +162,6 @@ public class GameManager : MonoBehaviour
 
                             if(keyToChar == ' ')
                             {
-
-                                //player.AddForce(Vector2.up * jumpSpeed, ForceMode2D.Impulse);
                                 playerController.canJump = true;
                                 points += 100;
                             } else
@@ -165,12 +172,25 @@ public class GameManager : MonoBehaviour
                     }
                 }
 
-                if(gameOver)
+                if(gameOver || winState)
                 {
                     if(Input.GetKeyUp(KeyCode.R))
                     {
+                        winState = false;
+                        gameOver = false;
                         SceneManager.LoadScene("Scene1");
                     }
+                }
+
+                if(winState)
+                {
+                    if (Input.GetKeyUp(KeyCode.Space))
+                    {
+                        //Go to next level
+                        winState = false;
+                        SceneManager.LoadScene("Scene1");
+                    }
+
                 }
             }
         }
@@ -206,6 +226,8 @@ public class GameManager : MonoBehaviour
     public void GameOver()
     {
         finalText.text = "You scored " + points + " points.";
+        gameOverText.text = "You have been consumed by the darkness.";
+        restartText.text = "Press R to restart.";
         gameOverPanel.SetActive(true);
         gameOver = true;
     }
