@@ -21,19 +21,22 @@ public class PlayerController : MonoBehaviour
 
     public GameObject ground;
 
+    private bool gameOver;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        gameOver = false;
     }
 
     // Update is called once per frame
     void Update()
     {
 
-        if(playerCollider.IsTouching(groundCollider))
+        if(playerRB.transform.position.y < -7.5 && !gameOver)
         {
-            isJumping = false;
+            gameOver = true;
+            GameManager.instance.GameOver();
         }
         
         //if(!isFalling)

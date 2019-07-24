@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
     public Text typedText,
                 untypedText,
-                pointsText;
+                pointsText,
+                finalText;
 
     public Rigidbody2D player;
 
@@ -34,6 +36,11 @@ public class GameManager : MonoBehaviour
 
     public Image[] hearts;
 
+    private bool gameOver;
+
+    public GameObject gameOverPanel,
+                        groundGroup;
+
 
     private KeyCode[] keyCodes = {KeyCode.A, KeyCode.B, KeyCode.C, KeyCode.D, KeyCode.E, KeyCode.F, KeyCode.G, KeyCode.H, KeyCode.I,
                                     KeyCode.J, KeyCode.K, KeyCode.L, KeyCode.M, KeyCode.N, KeyCode.O, KeyCode.P, KeyCode.Q, KeyCode.R,
@@ -45,9 +52,15 @@ public class GameManager : MonoBehaviour
 
     private string[] sentences = { "And so, the adventure begins.", "It was a dark and stormy night.", "There were pigeons and shit.", "Not today, Satan. Not today." };
 
+    public static GameManager instance;
+
     // Start is called before the first frame update
     void Start()
     {
+        instance = this;
+
+        gameOver = false;
+
         typedChars = "";
         typedText.text = typedChars;
         sentenceNum = 0;
@@ -58,6 +71,8 @@ public class GameManager : MonoBehaviour
 
         upperCaseText = untypedText.text.ToUpper();
         currentChar = upperCaseText[0];
+
+        gameOverPanel.SetActive(false);
     }
 
     // Update is called once per frame
@@ -100,7 +115,7 @@ public class GameManager : MonoBehaviour
             {
                 keyPressed = e.keyCode;
 
-                if (containsKey(keyPressed) && !playerController.isFalling)
+                if (containsKey(keyPressed) && !playerController.isFalling && !gameOver)
                 {
 
                     keyPos = System.Array.IndexOf(keyCodes, keyPressed);
@@ -123,7 +138,13 @@ public class GameManager : MonoBehaviour
                             } else if(sentenceNum + 1 <= sentences.Length)
                             {
                                 sentenceNum++;
-                                untypedChars = sentences[sentenceNum];
+                                if (sentenceNum < sentences.Length)
+                                {
+                                    untypedChars = sentences[sentenceNum];
+                                } else
+                                {
+                                    // LEVEL COMPLETE!
+                                }
                                 typedChars = "";
                             }
 
@@ -141,6 +162,14 @@ public class GameManager : MonoBehaviour
                                 points += 10;
                             }
                         }
+                    }
+                }
+
+                if(gameOver)
+                {
+                    if(Input.GetKeyUp(KeyCode.R))
+                    {
+                        SceneManager.LoadScene("Scene1");
                     }
                 }
             }
@@ -172,5 +201,12 @@ public class GameManager : MonoBehaviour
             hearts[i].gameObject.SetActive(true);
         }
         */
+    }
+
+    public void GameOver()
+    {
+        finalText.text = "You scored " + points + " points.";
+        gameOverPanel.SetActive(true);
+        gameOver = true;
     }
 }
