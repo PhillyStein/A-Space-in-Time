@@ -41,7 +41,9 @@ public class GameManager : MonoBehaviour
 
     private bool gameOver;
 
-    public bool winState;
+    public bool winState,
+                canJump,
+                gameStarted;
 
     public GameObject gameOverPanel,
                         groundGroup;
@@ -50,16 +52,15 @@ public class GameManager : MonoBehaviour
     private KeyCode[] keyCodes = {KeyCode.A, KeyCode.B, KeyCode.C, KeyCode.D, KeyCode.E, KeyCode.F, KeyCode.G, KeyCode.H, KeyCode.I,
                                     KeyCode.J, KeyCode.K, KeyCode.L, KeyCode.M, KeyCode.N, KeyCode.O, KeyCode.P, KeyCode.Q, KeyCode.R,
                                     KeyCode.S, KeyCode.T, KeyCode.U, KeyCode.V, KeyCode.W, KeyCode.X, KeyCode.Y, KeyCode.Z, KeyCode.Space,
-                                    KeyCode.Comma, KeyCode.Period, KeyCode.Exclaim};
+                                    KeyCode.Comma, KeyCode.Period, KeyCode.Minus};
 
     private char[] charArray = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N',
-                                'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', ' ', ',', '.', '!'};
+                                'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', ' ', ',', '.', '-' };
 
     private string[][] sentences = new string[2][];
-
-    //private string[] levelOne = { "Level one is for kids", "It has easy words", "Like cat and dog", "If you fail on level one", "You are really bad", "You can not fail on level one", "I will tell everybody" },
-    private string[] levelOne = { "Level one is for kids" },
-                        levelTwo = { "Oh good", "You have made it", "This is level two", "Level two has full stops.", "Or periods.", "Whatever you call them.", "Level two has them.", "A lot of them.", "This is an ellipsis...", "People use them all the time.", "They use them incorrectly." },
+    
+    private string[] levelOne = { "Type the characters you see", "Well done", "You have mastered the controls", "Welcome to A Space in Time", "You may be wondering", "where the gameplay is.", "Patience, young grasshopper.", "You are just getting warmed up.", "The space bar is a special key.", "Whenever you press it" },
+                        levelTwo = { "You will jump.", "But only if you press it", "when it comes up." },
                         levelThree = { "That level was too easy.", "Here comes a comma.", "Commas are cool, I guess.", "I guess level three is about commas.", "We should probably have more.", "Well, pal, the problem is...", "...these sentences are not...", "...very long.", "They have to fit along", "the bottom, here.", "Otherwise, you would not see", "what you should be tpying." };
 
     public static GameManager instance;
@@ -68,6 +69,8 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         instance = this;
+        gameStarted = false;
+        canJump = false;
         gameOver = false;
         winState = false;
 
@@ -115,6 +118,16 @@ public class GameManager : MonoBehaviour
             lives--;
         }
 
+        if(level >= 2)
+        {
+            canJump = true;
+        }
+
+        if(level >= 3)
+        {
+            gameStarted = true;
+        }
+
         UpdateHearts();
 
         pointsText.text = points.ToString();
@@ -140,7 +153,6 @@ public class GameManager : MonoBehaviour
                     {
                         if (keyToChar == upperCaseText[0])
                         {
-
                             typedChars = typedChars + untypedChars[0];
                             //typedText.text = typedChars;
                             untypedChars = untypedChars.Substring(1, untypedChars.Length - 1);
@@ -179,8 +191,8 @@ public class GameManager : MonoBehaviour
                                         
                                         gameOverText.text = "Congratulations. You have reached level " + level + "." ;
                                         restartText.text = "Press SPACE to continue.\nPress R to restart.";
-                                        gameOverPanel.SetActive(true);
-                                        winState = true;
+                                        /*gameOverPanel.SetActive(true);
+                                        winState = true;*/
 
                                         playerController.playerLag *= 10;
                                     } else
@@ -198,7 +210,7 @@ public class GameManager : MonoBehaviour
                             typedText.text = typedChars;
                             untypedText.text = untypedChars;
 
-                            if(keyPressed == KeyCode.Space)
+                            if(keyPressed == KeyCode.Space && canJump)
                             {
                                 playerController.canJump = true;
                                 points += 100;
@@ -219,7 +231,7 @@ public class GameManager : MonoBehaviour
                         SceneManager.LoadScene("Scene1");
                     }
                 }
-
+                
                 if(winState)
                 {
                     if (Input.GetKeyUp(KeyCode.Space))
