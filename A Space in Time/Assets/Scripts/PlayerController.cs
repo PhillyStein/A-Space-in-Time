@@ -48,7 +48,7 @@ public class PlayerController : MonoBehaviour
             playerRB.transform.position = new Vector2(-4.8f, playerRB.transform.position.y);
         }
 
-        if (!Input.anyKey && GameManager.instance.gameStarted)
+        if (!Input.anyKey && GameManager.instance.fogMoving && !GameManager.instance.isPaused)
         {
             this.transform.position = new Vector2(this.transform.position.x - playerLag, this.transform.position.y);
         }
@@ -59,7 +59,7 @@ public class PlayerController : MonoBehaviour
             GameManager.instance.GameOver();
         }
 
-        if (!gameOver && !GameManager.instance.winState && GameManager.instance.gameStarted)
+        if (!gameOver && !GameManager.instance.winState && GameManager.instance.gameStarted && !GameManager.instance.isPaused)
         {
             targetPos = new Vector2(ground.transform.position.x - moveSpeed * Time.deltaTime, ground.transform.position.y);
             ground.transform.position = targetPos;

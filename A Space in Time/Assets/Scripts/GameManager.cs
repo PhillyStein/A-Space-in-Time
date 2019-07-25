@@ -19,6 +19,7 @@ public class GameManager : MonoBehaviour
 
     public int jumpSpeed,
                 points = 0,
+                difficulty = 0,
                 lives = 3;
 
     private string typedChars,
@@ -39,13 +40,17 @@ public class GameManager : MonoBehaviour
 
     public Image[] hearts;
 
-    private bool gameOver;
+    private bool gameOver,
+                canJump;
 
     public bool winState,
-                canJump,
+                fogMoving,
+                isPaused,
+                isTutorial,
                 gameStarted;
 
     public GameObject gameOverPanel,
+                        pauseMenu,
                         groundGroup;
 
 
@@ -57,32 +62,64 @@ public class GameManager : MonoBehaviour
     private char[] charArray = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N',
                                 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', ' ', ',', '.', '-' };
 
-    private string[][] sentences = new string[2][];
-    
-    private string[] levelOne = { "Type the characters you see", "Well done", "You have mastered the controls", "Welcome to A Space in Time", "You may be wondering", "where the gameplay is.", "Patience, young grasshopper.", "You are just getting warmed up.", "The space bar is a special key.", "Whenever you press it" },
-                        levelTwo = { "You will jump.", "But only if you press it", "when it comes up." },
-                        levelThree = { "That level was too easy.", "Here comes a comma.", "Commas are cool, I guess.", "I guess level three is about commas.", "We should probably have more.", "Well, pal, the problem is...", "...these sentences are not...", "...very long.", "They have to fit along", "the bottom, here.", "Otherwise, you would not see", "what you should be tpying." };
+    public string[,] sentences = {
+                                    { "Type the characters you see", "Well done", "You have mastered the controls", "Welcome to A Space in Time", "You may be wondering", "where the gameplay is.", "Patience, young grasshopper.", "You are just getting warmed up.", "The space bar is a special key.", "Whenever you press it" },
+                                    { "You will jump.", "But only if you press it", "when it is a part", "of the sentence.", "Just time your jumps.", "To avoid the dangers.", "a a", "b b", "c c", "d d" },
+                                    { "Now jump.", "Good, but there is more.", "e e", "f f", "g g", "h h", "i i", "j j", "k k", "l l" },
+                                    { "Here comes the darkness.", "It will slowly creep up on you.", "So try not to hesitate.", "Otherwise you will perish.", "That would be bad", "It could be worse.", "It starts off slow", "But it will get faster.", "m m", "n n" },
+                                    { "Much faster.", "o o", "p p", "q q", "r r", "s s", "t t", "u u", "v v", "w w"}
+    };
+
+    string[,] multiDimensionalArray2 = { { "1", "2", "3" }, { "4", "5", "6" }, {"h", "7", "7"} };
+
+    public string[] levelOne = { "Type the characters you see", "Well done", "You have mastered the controls", "Welcome to A Space in Time", "You may be wondering", "where the gameplay is.", "Patience, young grasshopper.", "You are just getting warmed up.", "The space bar is a special key.", "Whenever you press it" },
+                    levelTwo = { "You will jump.", "But only if you press it", "when it comes up." },
+                    levelThree = { "Now jump.", "Good, but there is more." },
+                    levelFour = { "Here comes the darkness.", "It will slowly creep up on you.", "So try not to hesitate.", "Otherwise you will perish.", "That would be bad", "It could be worse.", "It starts off slow", "But it will get faster." },
+                    levelFive = { "Much faster."};
 
     public static GameManager instance;
 
     // Start is called before the first frame update
     void Start()
     {
-        instance = this;
+        if (instance == null)
+        {
+            instance = this;
+        }
+
+        isTutorial = ScoreKeeper.instance.isTutorial;
         gameStarted = false;
+        isPaused = false;
         canJump = false;
+        fogMoving = false;
         gameOver = false;
         winState = false;
 
-        level = 0;
+        pauseMenu.SetActive(false);
 
-        sentences[0] = levelOne;
-        sentences[1] = levelTwo;
+        if (isTutorial)
+        {
+            //Start on the first level
+            level = 0;
+        } else
+        {
+            //Start on a later level, skipping the tutorial part.
+            level = 4;
+        }
+
+        /*
+        sentences[0] = new string[] { levelOne };
+        sentences[1] = new string[levelTwo.Length];
+        sentences[2] = new string[levelThree.Length];
+        sentences[3] = new string[levelFour.Length];
+        sentences[4] = new string[levelFive.Length];
+        */
 
         typedChars = "";
         typedText.text = typedChars;
         sentenceNum = 0;
-        untypedChars = sentences[0][0];
+        untypedChars = sentences[level,0];
         untypedText.text = untypedChars;
         typedCharsSize = typedChars.Length;
         untypedCharsSize = untypedChars.Length;
@@ -118,19 +155,47 @@ public class GameManager : MonoBehaviour
             lives--;
         }
 
-        if(level >= 2)
+        if(level >= 1)
         {
             canJump = true;
         }
 
-        if(level >= 3)
+        if(level >= 2)
         {
             gameStarted = true;
+        }
+
+        if(level >= 3)
+        {
+            fogMoving = true;
         }
 
         UpdateHearts();
 
         pointsText.text = points.ToString();
+
+        if (Input.GetKeyUp(KeyCode.Escape))
+        {
+            Pause();
+        }
+
+        if(isPaused || gameOver)
+        {
+            if(Input.GetKeyUp(KeyCode.R))
+            {
+                SceneManager.LoadScene("Scene1");
+            }
+
+            if (Input.GetKeyUp(KeyCode.M))
+            {
+                SceneManager.LoadScene("MainMenu");
+            }
+        }
+
+        if(points > ScoreKeeper.GetHighScore())
+        {
+            ScoreKeeper.SetHighScore(points);
+        }
     }
 
 
@@ -143,7 +208,7 @@ public class GameManager : MonoBehaviour
             {
                 keyPressed = e.keyCode;
 
-                if (containsKey(keyPressed) && !playerController.isFalling && !gameOver)
+                if (containsKey(keyPressed) && !playerController.isFalling && !gameOver && !isPaused)
                 {
 
                     keyPos = System.Array.IndexOf(keyCodes, keyPressed);
@@ -162,15 +227,15 @@ public class GameManager : MonoBehaviour
                             if (upperCaseText.Length > 0)
                             {
                                 currentChar = upperCaseText[0];
-                            } else if(sentenceNum + 1 <= sentences[level].Length)
+                            } else if(sentenceNum + 1 < 10)
                             {
                                 sentenceNum++;
                                 //playerController.playerRB.transform.position = new Vector2(playerController.playerRB.transform.position.x + 5, playerController.playerRB.transform.position.y);
                                 playerController.playerRB.transform.Translate(Vector2.right * 50 * Time.deltaTime, Space.World);
 
-                                if (sentenceNum < sentences[level].Length)
+                                if (sentenceNum < 10)
                                 {
-                                    untypedChars = sentences[level][sentenceNum];
+                                    untypedChars = sentences[level, sentenceNum];
                                 } else
                                 {
                                     // LEVEL COMPLETE!
@@ -182,25 +247,30 @@ public class GameManager : MonoBehaviour
                                     winState = true;
                                     */
                                     level++;
-                                    if(level < sentences.Length)
+                                    if(level < 5)
                                     {
                                         sentenceNum = 0;
-                                        untypedChars = sentences[level][sentenceNum];
+                                        untypedChars = sentences[level,sentenceNum];
 
+                                        /*
                                         finalText.text = "You scored " + points + " points.";
                                         
                                         gameOverText.text = "Congratulations. You have reached level " + level + "." ;
                                         restartText.text = "Press SPACE to continue.\nPress R to restart.";
-                                        /*gameOverPanel.SetActive(true);
+                                        gameOverPanel.SetActive(true);
                                         winState = true;*/
 
-                                        playerController.playerLag *= 10;
+                                        if (fogMoving)
+                                        {
+                                            playerController.playerLag *= 10;
+                                        }
                                     } else
                                     {
                                         finalText.text = "You scored " + points + " points.";
                                         gameOverText.text = "Congratulations. You have evaded the darkness.";
                                         restartText.text = "Press SPACE to continue.\nPress R to restart.";
                                         gameOverPanel.SetActive(true);
+                                        isPaused = true;
                                         winState = true;
                                     }
                                 }
@@ -280,9 +350,15 @@ public class GameManager : MonoBehaviour
         {
             finalText.text = "You scored " + points + " points.";
             gameOverText.text = "You have been consumed by the darkness.";
-            restartText.text = "Press R to restart.";
             gameOverPanel.SetActive(true);
+            isPaused = true;
             gameOver = true;
         }
+    }
+
+    public void Pause()
+    {
+        pauseMenu.SetActive(!pauseMenu.activeInHierarchy);
+        isPaused = !isPaused;
     }
 }
