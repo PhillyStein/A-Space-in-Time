@@ -50,7 +50,12 @@ public class GameManager : MonoBehaviour
 
     public GameObject gameOverPanel,
                         pauseMenu,
-                        groundGroup;
+                        groundGroup,
+                        highlightedText;
+
+    public RectTransform highlight;
+
+    public Vector2 highlightPos;
 
 
     private KeyCode[] keyCodes = {KeyCode.A, KeyCode.B, KeyCode.C, KeyCode.D, KeyCode.E, KeyCode.F, KeyCode.G, KeyCode.H, KeyCode.I,
@@ -62,9 +67,9 @@ public class GameManager : MonoBehaviour
                                 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', ' ', ',', '.', '-' };
 
     public string[,] sentences = {
-                                    { "Type the characters you see.", "Well done.", "You have mastered the controls.", "Welcome to A Space in Time.", "You may be wondering", "where the gameplay is.", "Patience, young grasshopper.", "We are just getting started.", "The space bar is a special key.", "Whenever you press it" },
-                                    { "You will jump.", "But only if you press it", "as part of a sentence.", "Just time your jumps.", "To avoid the dangers.", "Yes, there are dangers ahead.", "There will be pitfalls.", "And blocks that are slightly", "too large to step over.", "Cue the dangers." },
-                                    { "Remember, time your jumps.", "Patience is a virtue, after all.", "Take it all in your stride.", "There is no need to rush.", "Slow and steady wins the race.", "Well it would, were it not for", "The Creeping Darkness.", "Oh, I neglected to mention", "The darkness will chase you", "Right about..." },
+                                    { "Type the highlighted characters.", "Well done.", "You have mastered the controls.", "Welcome to A Space in Time.", "You may be wondering", "where the gameplay is.", "Patience, young grasshopper.", "We are just getting started.", "The space bar is a special key.", "Whenever you press it" },
+                                    { "You will jump.", "But only if you press it", "while it is highlighted.", "Just time your jumps.", "To avoid the dangers.", "Yes, there are dangers ahead.", "There will be pitfalls.", "And blocks that are slightly", "too large to step over.", "Cue the dangers." },
+                                    { "You should time your jumps.", "Patience is a virtue, after all.", "Take it all in your stride.", "There is no need to rush.", "Slow and steady wins the race.", "Well it would, were it not for", "The Creeping Darkness.", "Oh, I neglected to mention", "The darkness will chase you", "Right about..." },
                                     { "Now.", "It is quite slow to begin with.", "But it will indeed get faster", "as time goes on.", "So try to stay away from it.", "You may have already noticed", "that every sentence you type", "gives you a slight boost.", "With skill, you may survive.", "But you will likely perish." },
                                     { "Sorry about that.", "We are almost at the end", "of the tutorial section.", "Just be good at typing.", "And also time your jumps.", "I give great advice.", "I shall now leave you", "to type out the lyrics", "to Space Oddity by David Bowie.", "Good luck."},
                                     {"Ground Control to Major Tom.", "Ground Control to Major Tom.", "Take your protein pills", "and put your helmet on.", "Ground Control to Major Tom.", "Commencing countdown", "engines on.", "Check ignition and may", "Gods love be with you.", "Ten, Nine, Eight, Seven, Six,"},
@@ -115,6 +120,8 @@ public class GameManager : MonoBehaviour
         upperCaseText = untypedText.text.ToUpper();
         currentChar = upperCaseText[0];
 
+        highlightPos = highlight.position;
+
         gameOverPanel.SetActive(false);
     }
 
@@ -126,6 +133,9 @@ public class GameManager : MonoBehaviour
         {
             currentChar = upperCaseText[0];
         }
+
+        //highlightedText.transform.position = untypedText.transform.position;
+        //highlightedText.transform.localScale = new Vector3(1, 1, 1);
 
         typedCharsSize = typedChars.Length;
         untypedCharsSize = untypedChars.Length;
@@ -221,6 +231,8 @@ public class GameManager : MonoBehaviour
                             //typedText.text = typedChars;
                             untypedChars = untypedChars.Substring(1, untypedChars.Length - 1);
 
+                            highlightedText.transform.position = new Vector2(highlightedText.transform.position.x + 30, highlightedText.transform.position.y);
+
                             upperCaseText = untypedChars.ToUpper();
 
                             if (upperCaseText.Length > 0)
@@ -242,6 +254,10 @@ public class GameManager : MonoBehaviour
                                     {
                                         sentenceNum = 0;
                                         untypedChars = sentences[level,sentenceNum];
+
+                                        //highlightedText.transform.position = new Vector2(highlightedText.transform.position.x - (typedChars.Length * 30), highlightedText.transform.position.y);
+                                        //highlight.position = new Vector2(16f, highlight.position.y);
+
                                         /*
                                         if (fogMoving)
                                         {
@@ -250,6 +266,7 @@ public class GameManager : MonoBehaviour
                                         */
                                     } 
                                 }
+                                highlightedText.transform.position = new Vector2(highlightedText.transform.position.x - (typedChars.Length * 30), highlightedText.transform.position.y);
                                 typedChars = "";
                             }
 
