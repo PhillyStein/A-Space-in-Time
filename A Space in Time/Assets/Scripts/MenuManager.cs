@@ -25,19 +25,27 @@ public class MenuManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        fadeSpeed = 0.3f;
-        highScore = ScoreKeeper.GetHighScore();
+        highScore = ScoreKeeper.instance.highScore;
         scoreText.text = "High score: " + highScore;
 
-        gameJam.color = new Color(gameJam.color.r, gameJam.color.g, gameJam.color.b, 0f);
-        phillyStein.color = new Color(phillyStein.color.r, phillyStein.color.g, phillyStein.color.b, 0f);
+        if (ScoreKeeper.instance.isFromPause)
+        {
+            SkipCredits();
+        }
+        else
+        {
+            fadeSpeed = 0.3f;
 
-        phillyFadeIn = true;
-        phillyFadeOut = false;
-        jamFadeIn = false;
-        jamFadeOut = false;
-        whiteFadeOut = false;
-        canControl = false;
+            gameJam.color = new Color(gameJam.color.r, gameJam.color.g, gameJam.color.b, 0f);
+            phillyStein.color = new Color(phillyStein.color.r, phillyStein.color.g, phillyStein.color.b, 0f);
+
+            phillyFadeIn = true;
+            phillyFadeOut = false;
+            jamFadeIn = false;
+            jamFadeOut = false;
+            whiteFadeOut = false;
+            canControl = false;
+        }
     }
 
     // Update is called once per frame
@@ -52,7 +60,11 @@ public class MenuManager : MonoBehaviour
         if (Input.GetKeyUp(KeyCode.Space) && canControl)
         {
             LoadGame(false);
+        }
 
+        if (Input.GetKeyUp(KeyCode.Space) && !canControl)
+        {
+            SkipCredits();
         }
 
         if (Input.GetKeyUp(KeyCode.Q) && canControl)
@@ -122,5 +134,18 @@ public class MenuManager : MonoBehaviour
     {
         ScoreKeeper.instance.isTutorial = isTut;
         SceneManager.LoadScene("Scene1");
+    }
+
+    public void SkipCredits()
+    {
+        phillyStein.color = new Color(phillyStein.color.r, phillyStein.color.g, phillyStein.color.b, 0f);
+        gameJam.color = new Color(gameJam.color.r, gameJam.color.g, gameJam.color.b, 0f);
+        whitePanel.color = new Color(whitePanel.color.r, whitePanel.color.g, whitePanel.color.b, 0f);
+        canControl = true;
+        phillyFadeIn = false;
+        phillyFadeOut = false;
+        jamFadeIn = false;
+        jamFadeOut = false;
+        whiteFadeOut = false;
     }
 }

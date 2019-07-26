@@ -10,8 +10,7 @@ public class GameManager : MonoBehaviour
                 untypedText,
                 pointsText,
                 finalText,
-                gameOverText,
-                restartText;
+                gameOverText;
 
     public Rigidbody2D player;
 
@@ -20,6 +19,7 @@ public class GameManager : MonoBehaviour
     public int jumpSpeed,
                 points = 0,
                 difficulty = 0,
+                level,
                 lives = 3;
 
     private string typedChars,
@@ -29,7 +29,6 @@ public class GameManager : MonoBehaviour
     private int typedCharsSize,
                 untypedCharsSize,
                 keyPos,
-                level,
                 sentenceNum;
 
     public KeyCode keyPressed,
@@ -63,20 +62,17 @@ public class GameManager : MonoBehaviour
                                 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', ' ', ',', '.', '-' };
 
     public string[,] sentences = {
-                                    { "Type the characters you see", "Well done", "You have mastered the controls", "Welcome to A Space in Time", "You may be wondering", "where the gameplay is.", "Patience, young grasshopper.", "You are just getting warmed up.", "The space bar is a special key.", "Whenever you press it" },
-                                    { "You will jump.", "But only if you press it", "when it is a part", "of the sentence.", "Just time your jumps.", "To avoid the dangers.", "a a", "b b", "c c", "d d" },
-                                    { "Now jump.", "Good, but there is more.", "e e", "f f", "g g", "h h", "i i", "j j", "k k", "l l" },
-                                    { "Here comes the darkness.", "It will slowly creep up on you.", "So try not to hesitate.", "Otherwise you will perish.", "That would be bad", "It could be worse.", "It starts off slow", "But it will get faster.", "m m", "n n" },
-                                    { "Much faster.", "o o", "p p", "q q", "r r", "s s", "t t", "u u", "v v", "w w"}
+                                    { "Type the characters you see.", "Well done.", "You have mastered the controls.", "Welcome to A Space in Time.", "You may be wondering", "where the gameplay is.", "Patience, young grasshopper.", "We are just getting started.", "The space bar is a special key.", "Whenever you press it" },
+                                    { "You will jump.", "But only if you press it", "when it is a part", "of the sentence.", "Just time your jumps.", "To avoid the dangers.", "Yes, there are dangers ahead.", "And they are randomised.", "So there is no pattern to work out.", "Cue the obstacles." },
+                                    { "Remember, time your jumps.", "Patience is a virtue, after all.", "Take it all in your stride.", "There is no need to rush.", "Slow and steady wins the race.", "Well it would, were it not for", "The Creeping Darkness.", "Oh, I neglected to mention", "The darkness will chase you", "Right about..." },
+                                    { "Now.", "It is quite slow to begin with.", "But it will indeed get faster", "as time goes on.", "So try to stay away from it.", "You may have already noticed", "that every sentence you type", "gives you a slight boost.", "With skill, you may survive.", "But you will likely perish." },
+                                    { "Sorry about that.", "We are almost at the end", "of the tutorial section.", "Just be good at typing.", "And also time your jumps.", "I give great advice.", "I shall now leave you", "to type out the lyrics", "to Space Oddity by David Bowie.", "Good luck."},
+                                    {"Ground Control to Major Tom.", "Ground Control to Major Tom.", "Take your protein pills", "and put your helmet on.", "Ground Control to Major Tom.", "Commencing countdown", "engines on.", "Check ignition and may", "Gods love be with you.", "Ten, Nine, Eight, Seven, Six,"},
+                                    {"Five, Four, Three, Two, One,", "Lift off.", "This is Ground Control", "to Major Tom.", "You really made the grade.", "And the papers want to know", "whose shirts you wear.", "Now it is time to leave", "the capsule if you dare.", "This is Major Tom"},
+                                    {"to Ground Control.", "I am stepping through the door.", "And I am floating", "in a most peculiar way.", "And the stars look", "very different today.", "For here", "Am I sitting in a tin can.", "Far above the world.", "Planet Earth is blue"},
+                                    {"And there is nothing I can do.", "Though I am past one hundred", "thousand miles.", "I am feeling very still.", "And I think my spaceship", "knows which way to go.", "Tell my wife", "I love her very much", "she knows.", "Ground Control to Major Tom."},
+                                    {"Your circuit is dead", "there is something wrong.", "Can you hear me, Major Tom.", "Can you hear me, Major Tom.", "Can you hear me, Major Tom.", "Can you hear", "Am I floating round my tin can.", "Far above the Moon.", "Planet Earth is blue", "And there is nothing I can do."}
     };
-
-    string[,] multiDimensionalArray2 = { { "1", "2", "3" }, { "4", "5", "6" }, {"h", "7", "7"} };
-
-    public string[] levelOne = { "Type the characters you see", "Well done", "You have mastered the controls", "Welcome to A Space in Time", "You may be wondering", "where the gameplay is.", "Patience, young grasshopper.", "You are just getting warmed up.", "The space bar is a special key.", "Whenever you press it" },
-                    levelTwo = { "You will jump.", "But only if you press it", "when it comes up." },
-                    levelThree = { "Now jump.", "Good, but there is more." },
-                    levelFour = { "Here comes the darkness.", "It will slowly creep up on you.", "So try not to hesitate.", "Otherwise you will perish.", "That would be bad", "It could be worse.", "It starts off slow", "But it will get faster." },
-                    levelFive = { "Much faster."};
 
     public static GameManager instance;
 
@@ -105,7 +101,7 @@ public class GameManager : MonoBehaviour
         } else
         {
             //Start on a later level, skipping the tutorial part.
-            level = 4;
+            level = 5;
         }
 
         /*
@@ -188,13 +184,23 @@ public class GameManager : MonoBehaviour
 
             if (Input.GetKeyUp(KeyCode.M))
             {
+                ScoreKeeper.instance.isFromPause = true;
                 SceneManager.LoadScene("MainMenu");
             }
         }
-
-        if(points > ScoreKeeper.GetHighScore())
+        
+        if(level == 10)
         {
-            ScoreKeeper.SetHighScore(points);
+            if (points > ScoreKeeper.instance.highScore)
+            {
+                ScoreKeeper.instance.highScore = points;
+            }
+
+            finalText.text = "You scored " + points + " points.";
+            gameOverText.text = "Congratulations. You have evaded the darkness.";
+            gameOverPanel.SetActive(true);
+            isPaused = true;
+            winState = true;
         }
     }
 
@@ -227,52 +233,29 @@ public class GameManager : MonoBehaviour
                             if (upperCaseText.Length > 0)
                             {
                                 currentChar = upperCaseText[0];
-                            } else if(sentenceNum + 1 < 10)
+                            } else //if(sentenceNum + 1 < 10)
                             {
                                 sentenceNum++;
-                                //playerController.playerRB.transform.position = new Vector2(playerController.playerRB.transform.position.x + 5, playerController.playerRB.transform.position.y);
                                 playerController.playerRB.transform.Translate(Vector2.right * 50 * Time.deltaTime, Space.World);
 
                                 if (sentenceNum < 10)
                                 {
                                     untypedChars = sentences[level, sentenceNum];
-                                } else
+                                }
+                                else
                                 {
-                                    // LEVEL COMPLETE!
-                                    /*
-                                    finalText.text = "You scored " + points + " points.";
-                                    gameOverText.text = "Congratulations. You have evaded the darkness.";
-                                    restartText.text = "Press SPACE to continue.\nPress R to restart.";
-                                    gameOverPanel.SetActive(true);
-                                    winState = true;
-                                    */
                                     level++;
-                                    if(level < 5)
+                                    if(level < 10)
                                     {
                                         sentenceNum = 0;
                                         untypedChars = sentences[level,sentenceNum];
-
                                         /*
-                                        finalText.text = "You scored " + points + " points.";
-                                        
-                                        gameOverText.text = "Congratulations. You have reached level " + level + "." ;
-                                        restartText.text = "Press SPACE to continue.\nPress R to restart.";
-                                        gameOverPanel.SetActive(true);
-                                        winState = true;*/
-
                                         if (fogMoving)
                                         {
                                             playerController.playerLag *= 10;
                                         }
-                                    } else
-                                    {
-                                        finalText.text = "You scored " + points + " points.";
-                                        gameOverText.text = "Congratulations. You have evaded the darkness.";
-                                        restartText.text = "Press SPACE to continue.\nPress R to restart.";
-                                        gameOverPanel.SetActive(true);
-                                        isPaused = true;
-                                        winState = true;
-                                    }
+                                        */
+                                    } 
                                 }
                                 typedChars = "";
                             }
@@ -348,6 +331,10 @@ public class GameManager : MonoBehaviour
     {
         if (!winState)
         {
+            if (points > ScoreKeeper.instance.highScore)
+            {
+                ScoreKeeper.instance.highScore = points;
+            }
             finalText.text = "You scored " + points + " points.";
             gameOverText.text = "You have been consumed by the darkness.";
             gameOverPanel.SetActive(true);

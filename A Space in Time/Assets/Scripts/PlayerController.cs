@@ -34,8 +34,8 @@ public class PlayerController : MonoBehaviour
         instance = this;
 
         gameOver = false;
-
-        playerLag = 0.00001f;
+        
+        playerLag = 0.0001f;
 
         startPos = ground.transform.position;
     }
@@ -43,6 +43,8 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        playerLag = (GameManager.instance.level - 2) * 0.0001f;
+
         if (playerRB.transform.position.x > -4.8f)
         {
             playerRB.transform.position = new Vector2(-4.8f, playerRB.transform.position.y);

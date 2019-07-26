@@ -6,9 +6,10 @@ public class ScoreKeeper : MonoBehaviour
 {
     public static ScoreKeeper instance;
 
-    public static int highScore;
+    public int highScore;
 
-    public bool isTutorial = true;
+    public bool isTutorial = true,
+                isFromPause = false;
 
     // Start is called before the first frame update
     void Start()
@@ -25,15 +26,5 @@ public class ScoreKeeper : MonoBehaviour
     void Update()
     {
         
-    }
-
-    public static void SetHighScore(int score)
-    {
-        highScore = score;
-    }
-
-    public static int GetHighScore()
-    {
-        return highScore;
     }
 }
