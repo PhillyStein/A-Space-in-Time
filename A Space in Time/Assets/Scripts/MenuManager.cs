@@ -25,9 +25,11 @@ public class MenuManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        SkipCredits();
         highScore = ScoreKeeper.instance.highScore;
         scoreText.text = "High score: " + highScore;
 
+        /*
         if (ScoreKeeper.instance.isFromPause)
         {
             SkipCredits();
@@ -46,6 +48,7 @@ public class MenuManager : MonoBehaviour
             whiteFadeOut = false;
             canControl = false;
         }
+        */
     }
 
     // Update is called once per frame

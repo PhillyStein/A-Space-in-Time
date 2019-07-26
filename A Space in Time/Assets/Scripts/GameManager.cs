@@ -51,6 +51,7 @@ public class GameManager : MonoBehaviour
     public GameObject gameOverPanel,
                         pauseMenu,
                         groundGroup,
+                        theDarkness,
                         highlightedText;
 
     public RectTransform highlight;
@@ -128,6 +129,13 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(fogMoving)
+        {
+            theDarkness.SetActive(true);
+        }
+
+        playerController.moveSpeed = 5 + (level - 3);
+
         upperCaseText = untypedChars.ToUpper();
         if (upperCaseText.Length > 0)
         {
