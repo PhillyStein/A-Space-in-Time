@@ -8,7 +8,7 @@ public class MenuManager : MonoBehaviour
 {
 
     private int highScore;
-    private float fadeSpeed;
+    private float fadeSpeed = 0.5f;
     public Text scoreText;
 
     public Image whitePanel,
