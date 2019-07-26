@@ -54,12 +54,12 @@ public class MenuManager : MonoBehaviour
 
         if (Input.GetKeyUp(KeyCode.T) && canControl)
         {
-            LoadGame(true);
+            LoadGame(0);
         }
 
         if (Input.GetKeyUp(KeyCode.Space) && canControl)
         {
-            LoadGame(false);
+            LoadGame(5);
         }
 
         if (Input.GetKeyUp(KeyCode.Space) && !canControl)
@@ -130,9 +130,9 @@ public class MenuManager : MonoBehaviour
 
     }
 
-    public void LoadGame(bool isTut)
+    public void LoadGame(int startLevel)
     {
-        ScoreKeeper.instance.isTutorial = isTut;
+        ScoreKeeper.instance.startLevel = startLevel;
         SceneManager.LoadScene("Scene1");
     }
 

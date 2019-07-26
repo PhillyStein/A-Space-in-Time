@@ -63,7 +63,7 @@ public class GameManager : MonoBehaviour
 
     public string[,] sentences = {
                                     { "Type the characters you see.", "Well done.", "You have mastered the controls.", "Welcome to A Space in Time.", "You may be wondering", "where the gameplay is.", "Patience, young grasshopper.", "We are just getting started.", "The space bar is a special key.", "Whenever you press it" },
-                                    { "You will jump.", "But only if you press it", "when it is a part", "of the sentence.", "Just time your jumps.", "To avoid the dangers.", "Yes, there are dangers ahead.", "And they are randomised.", "So there is no pattern to work out.", "Cue the obstacles." },
+                                    { "You will jump.", "But only if you press it", "as part of a sentence.", "Just time your jumps.", "To avoid the dangers.", "Yes, there are dangers ahead.", "There will be pitfalls.", "And blocks that are slightly", "too large to step over.", "Cue the dangers." },
                                     { "Remember, time your jumps.", "Patience is a virtue, after all.", "Take it all in your stride.", "There is no need to rush.", "Slow and steady wins the race.", "Well it would, were it not for", "The Creeping Darkness.", "Oh, I neglected to mention", "The darkness will chase you", "Right about..." },
                                     { "Now.", "It is quite slow to begin with.", "But it will indeed get faster", "as time goes on.", "So try to stay away from it.", "You may have already noticed", "that every sentence you type", "gives you a slight boost.", "With skill, you may survive.", "But you will likely perish." },
                                     { "Sorry about that.", "We are almost at the end", "of the tutorial section.", "Just be good at typing.", "And also time your jumps.", "I give great advice.", "I shall now leave you", "to type out the lyrics", "to Space Oddity by David Bowie.", "Good luck."},
@@ -84,7 +84,7 @@ public class GameManager : MonoBehaviour
             instance = this;
         }
 
-        isTutorial = ScoreKeeper.instance.isTutorial;
+        //isTutorial = ScoreKeeper.instance.isTutorial;
         gameStarted = false;
         isPaused = false;
         canJump = false;
@@ -94,15 +94,7 @@ public class GameManager : MonoBehaviour
 
         pauseMenu.SetActive(false);
 
-        if (isTutorial)
-        {
-            //Start on the first level
-            level = 0;
-        } else
-        {
-            //Start on a later level, skipping the tutorial part.
-            level = 5;
-        }
+        level = ScoreKeeper.instance.startLevel;
 
         /*
         sentences[0] = new string[] { levelOne };
@@ -138,8 +130,8 @@ public class GameManager : MonoBehaviour
         typedCharsSize = typedChars.Length;
         untypedCharsSize = untypedChars.Length;
 
-        typedText.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, typedCharsSize * 60);
-        untypedText.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, untypedCharsSize * 60);
+        typedText.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, typedCharsSize * 30);
+        untypedText.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, untypedCharsSize * 30);
 
         if (Input.anyKey)
         {
@@ -179,6 +171,7 @@ public class GameManager : MonoBehaviour
         {
             if(Input.GetKeyUp(KeyCode.R))
             {
+                ScoreKeeper.instance.startLevel = level;
                 SceneManager.LoadScene("Scene1");
             }
 

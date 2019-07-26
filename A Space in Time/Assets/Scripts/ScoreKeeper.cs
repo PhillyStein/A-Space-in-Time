@@ -6,7 +6,8 @@ public class ScoreKeeper : MonoBehaviour
 {
     public static ScoreKeeper instance;
 
-    public int highScore;
+    public int highScore,
+                startLevel;
 
     public bool isTutorial = true,
                 isFromPause = false;
