@@ -253,7 +253,7 @@ public class GameManager : MonoBehaviour
                             //untypedChars = typedChars.Substring(currentCharIndex, 25);
                             typedText.text = typedChars.Substring(currentTypedIndex + 1, 25);
                             currentTypedIndex++;
-
+                            //
                             currentCharIndex++;
                             displayedText = completeText.Substring(currentCharIndex, 25);
                             untypedText.text = displayedText;
