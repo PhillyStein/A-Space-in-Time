@@ -60,9 +60,19 @@ public class MenuManager : MonoBehaviour
             LoadGame(0);
         }
 
+        if (Input.GetKeyUp(KeyCode.D) && canControl)
+        {
+            LoadGame(777);
+        }
+
+        if (Input.GetKeyUp(KeyCode.P) && canControl)
+        {
+            LoadGame(492);
+        }
+
         if (Input.GetKeyUp(KeyCode.Space) && canControl)
         {
-            LoadGame(5);
+            LoadGame(1258);
         }
 
         if (Input.GetKeyUp(KeyCode.Space) && !canControl)
@@ -133,9 +143,9 @@ public class MenuManager : MonoBehaviour
 
     }
 
-    public void LoadGame(int startLevel)
+    public void LoadGame(int startChar)
     {
-        ScoreKeeper.instance.startLevel = startLevel;
+        ScoreKeeper.instance.startChar = startChar;
         SceneManager.LoadScene("Scene1");
     }
 

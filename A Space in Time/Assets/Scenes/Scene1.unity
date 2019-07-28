@@ -1627,7 +1627,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 1, g: 1, b: 1, a: 0}
+  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -11601,7 +11601,7 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 2110676773}
+  - {fileID: 1742296272}
   - {fileID: 1144790846}
   m_Father: {fileID: 89774167}
   m_RootOrder: 1
@@ -11670,7 +11670,7 @@ MonoBehaviour:
   m_ChildForceExpandWidth: 0
   m_ChildForceExpandHeight: 0
   m_ChildControlWidth: 0
-  m_ChildControlHeight: 1
+  m_ChildControlHeight: 0
   m_ChildScaleWidth: 1
   m_ChildScaleHeight: 1
 --- !u!1 &1109643303
@@ -11867,7 +11867,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 932.01, y: 0}
+  m_SizeDelta: {x: 915.21, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1144790847
 MonoBehaviour:
@@ -11886,7 +11886,7 @@ MonoBehaviour:
   m_MinHeight: -1
   m_PreferredWidth: -1
   m_PreferredHeight: -1
-  m_FlexibleWidth: 10
+  m_FlexibleWidth: 25
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
 --- !u!1 &1218483354
@@ -13114,7 +13114,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21d18022cbf81f0468d26560bbc6c9e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  typedText: {fileID: 2110676771}
+  typedText: {fileID: 1742296274}
   untypedText: {fileID: 1144790844}
   pointsText: {fileID: 721996545}
   finalText: {fileID: 120251973}
@@ -13144,6 +13144,22 @@ MonoBehaviour:
   highlightedText: {fileID: 1425393625}
   highlight: {fileID: 1425393628}
   highlightPos: {x: 0, y: 0}
+  completeText: Type the highlighted characters. Well done. You have mastered the
+    controls. Welcome to A Space in Time. You may be wondering where the gameplay
+    is. Patience, young grasshopper. We are just getting started. The space bar is
+    a special key. Whenever you press it you will jump. But only if you press it while
+    it is highlighted. Just time your jumps. To avoid the dangers. Yes, there are
+    dangers ahead. There will be pitfalls. And blocks that are slightly too large
+    to step over. Cue the dangers. You should time your jumps. Patience is a virtue,
+    after all. Take it all in your stride. There is no need to rush. Slow and steady
+    wins the race. Well it would, were it not for The Creeping Darkness. Oh, I neglected
+    to mention The Darkness. The Darkness will chase you. Right about... Now. It is
+    quite slow to begin with. But it will indeed get faster as time goes on. So try
+    to stay away from it. You may have already noticed that every sentence you type
+    gives you a slight boost. With skill, you may survive. But you will likely perish.
+    Sorry about that. We are almost at the end of the tutorial section. Just be good
+    at typing. And also time your jumps. I give great advice. I shall now leave you
+    to type out the lyrics to Space Oddity by David Bowie. Good luck.
 --- !u!4 &1290615580
 Transform:
   m_ObjectHideFlags: 0
@@ -13526,7 +13542,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0.18200001}
-  m_AnchoredPosition: {x: 25.400024, y: 2}
+  m_AnchoredPosition: {x: 1010, y: 2}
   m_SizeDelta: {x: 32, y: -34}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!4 &1437861250 stripped
@@ -14906,6 +14922,106 @@ CanvasRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1741696632}
+  m_CullTransparentMesh: 0
+--- !u!1 &1742296271
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1742296272}
+  - component: {fileID: 1742296275}
+  - component: {fileID: 1742296274}
+  - component: {fileID: 1742296273}
+  m_Layer: 5
+  m_Name: Typed Text
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1742296272
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1742296271}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 990241908}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 986.4, y: 50}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1742296273
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1742296271}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1679637790, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreLayout: 0
+  m_MinWidth: -1
+  m_MinHeight: -1
+  m_PreferredWidth: 25
+  m_PreferredHeight: -1
+  m_FlexibleWidth: 25
+  m_FlexibleHeight: -1
+  m_LayoutPriority: 1
+--- !u!114 &1742296274
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1742296271}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 0, b: 0, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_FontData:
+    m_Font: {fileID: 12800000, guid: c086527ce70c20b42bc0fcc047ae75a6, type: 3}
+    m_FontSize: 50
+    m_FontStyle: 0
+    m_BestFit: 0
+    m_MinSize: 5
+    m_MaxSize: 70
+    m_Alignment: 5
+    m_AlignByGeometry: 0
+    m_RichText: 1
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 0
+    m_LineSpacing: 1
+  m_Text: Untyped Text.
+--- !u!222 &1742296275
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1742296271}
   m_CullTransparentMesh: 0
 --- !u!1 &1761304369
 GameObject:
@@ -16490,106 +16606,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: -518}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!1 &2110676770
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2110676773}
-  - component: {fileID: 2110676772}
-  - component: {fileID: 2110676771}
-  - component: {fileID: 2110676774}
-  m_Layer: 5
-  m_Name: Typed Text
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &2110676771
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2110676770}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0, b: 0, a: 1}
-  m_RaycastTarget: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_FontData:
-    m_Font: {fileID: 12800000, guid: c086527ce70c20b42bc0fcc047ae75a6, type: 3}
-    m_FontSize: 50
-    m_FontStyle: 0
-    m_BestFit: 0
-    m_MinSize: 5
-    m_MaxSize: 70
-    m_Alignment: 3
-    m_AlignByGeometry: 0
-    m_RichText: 1
-    m_HorizontalOverflow: 0
-    m_VerticalOverflow: 0
-    m_LineSpacing: 1
-  m_Text: T
---- !u!222 &2110676772
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2110676770}
-  m_CullTransparentMesh: 0
---- !u!224 &2110676773
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2110676770}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 990241908}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 30, y: 0}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &2110676774
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2110676770}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 1679637790, guid: f70555f144d8491a825f0804e09c671c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_IgnoreLayout: 0
-  m_MinWidth: -1
-  m_MinHeight: -1
-  m_PreferredWidth: -1
-  m_PreferredHeight: -1
-  m_FlexibleWidth: 10
-  m_FlexibleHeight: -1
-  m_LayoutPriority: 1
 --- !u!1 &2117677897
 GameObject:
   m_ObjectHideFlags: 0

@@ -24,11 +24,14 @@ public class GameManager : MonoBehaviour
 
     private string typedChars,
                     untypedChars,
-                    upperCaseText;
+                    upperCaseText,
+                    displayedText;
 
     private int typedCharsSize,
                 untypedCharsSize,
                 keyPos,
+                currentCharIndex,
+                currentTypedIndex,
                 sentenceNum;
 
     public KeyCode keyPressed,
@@ -67,6 +70,7 @@ public class GameManager : MonoBehaviour
     private char[] charArray = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N',
                                 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', ' ', ',', '.', '-' };
 
+    public string completeText;
     public string[,] sentences = {
                                     { "Type the highlighted characters.", "Well done.", "You have mastered the controls.", "Welcome to A Space in Time.", "You may be wondering", "where the gameplay is.", "Patience, young grasshopper.", "We are just getting started.", "The space bar is a special key.", "Whenever you press it" },
                                     { "You will jump.", "But only if you press it", "while it is highlighted.", "Just time your jumps.", "To avoid the dangers.", "Yes, there are dangers ahead.", "There will be pitfalls.", "And blocks that are slightly", "too large to step over.", "Cue the dangers." },
@@ -89,8 +93,19 @@ public class GameManager : MonoBehaviour
         {
             instance = this;
         }
+        
+        completeText = "Type the highlighted characters. Well done. You have mastered the controls. Welcome to A Space in Time. You may be wondering where the gameplay is. Patience, young grasshopper. We are just getting started. The space bar is a special key. Whenever you press it " +
+                                    "you will jump. But only if you press it while it is highlighted. Just time your jumps to avoid the dangers. Yes, there are dangers ahead. There will be pitfalls. And blocks that are slightly too large to step over. Cue the dangers. " +
+                                    "You should time your jumps. Patience is a virtue, after all. Take it all in your stride. There is no need to rush. Slow and steady wins the race. Well it would, were it not for The Creeping Darkness. Oh, I neglected to mention The Darkness. The Darkness will chase you. Right about... " +
+                                    "Now. It is quite slow to begin with. But it will indeed get faster as time goes on. So try to stay away from it. You may have already noticed that every sentence you type gives you a slight boost. With skill, you may survive. But you will likely perish. " +
+                                    "Sorry about that. We are almost at the end of the tutorial section. Just be good at typing. And also time your jumps. I give great advice. I shall now leave you to type out the lyrics to Space Oddity by David Bowie. Good luck. " +
+                                    "Ground Control to Major Tom. Ground Control to Major Tom. Take your protein pills and put your helmet on. Ground Control to Major Tom. Commencing countdown, engines on. Check ignition and may Gods love be with you. Ten, Nine, Eight, Seven, Six, " +
+                                    "Five, Four, Three, Two, One, Lift off. This is Ground Control to Major Tom. You really made the grade. And the papers want to know whose shirts you wear. Now it is time to leave the capsule if you dare. This is Major Tom " +
+                                    "to Ground Control. I am stepping through the door. And I am floating in a most peculiar way. And the stars look very different today. For here am I sitting in a tin can. Far above the world. Planet Earth is blue " +
+                                    "And there is nothing I can do. Though I am past one hundred thousand miles. I am feeling very still. And I think my spaceship knows which way to go. Tell my wife I love her very much, she knows. Ground Control to Major Tom. " +
+                                    "Your circuit is dead there is something wrong. Can you hear me, Major Tom. Can you hear me, Major Tom. Can you hear me, Major Tom. Can you hear, Am I floating round my tin can. Far above the Moon. Planet Earth is blue and there is nothing I can do.";
 
-        //isTutorial = ScoreKeeper.instance.isTutorial;
+
         gameStarted = false;
         isPaused = false;
         canJump = false;
@@ -98,30 +113,22 @@ public class GameManager : MonoBehaviour
         gameOver = false;
         winState = false;
 
+        currentTypedIndex = 0;
+        currentCharIndex = ScoreKeeper.instance.startChar;
+
+        displayedText = completeText.Substring(currentCharIndex, 25);
+
         pauseMenu.SetActive(false);
 
         level = ScoreKeeper.instance.startLevel;
 
-        /*
-        sentences[0] = new string[] { levelOne };
-        sentences[1] = new string[levelTwo.Length];
-        sentences[2] = new string[levelThree.Length];
-        sentences[3] = new string[levelFour.Length];
-        sentences[4] = new string[levelFive.Length];
-        */
-
-        typedChars = "";
+        typedChars = "                         "; //25 in length
         typedText.text = typedChars;
-        sentenceNum = 0;
-        untypedChars = sentences[level,0];
+        untypedChars = displayedText;
         untypedText.text = untypedChars;
-        typedCharsSize = typedChars.Length;
-        untypedCharsSize = untypedChars.Length;
 
-        upperCaseText = untypedText.text.ToUpper();
+        upperCaseText = displayedText.ToUpper();
         currentChar = upperCaseText[0];
-
-        highlightPos = highlight.position;
 
         gameOverPanel.SetActive(false);
     }
@@ -129,27 +136,32 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(fogMoving)
+        if (fogMoving)
         {
             theDarkness.SetActive(true);
         }
 
         playerController.moveSpeed = 5 + (level - 3);
+        
 
-        upperCaseText = untypedChars.ToUpper();
-        if (upperCaseText.Length > 0)
+        if (currentCharIndex > 776)
         {
-            currentChar = upperCaseText[0];
+            fogMoving = true;
+            gameStarted = true;
+            canJump = true;
+            level = 3;
         }
-
-        //highlightedText.transform.position = untypedText.transform.position;
-        //highlightedText.transform.localScale = new Vector3(1, 1, 1);
-
-        typedCharsSize = typedChars.Length;
-        untypedCharsSize = untypedChars.Length;
-
-        typedText.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, typedCharsSize * 30);
-        untypedText.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, untypedCharsSize * 30);
+        else if (currentCharIndex > 492)
+        {
+            gameStarted = true;
+            canJump = true;
+            level = 2;
+        }
+        else if (currentCharIndex > 260)
+        {
+            canJump = true;
+            level = 1;
+        }
 
         if (Input.anyKey)
         {
@@ -161,6 +173,7 @@ public class GameManager : MonoBehaviour
             lives--;
         }
 
+        /*
         if(level >= 1)
         {
             canJump = true;
@@ -175,8 +188,7 @@ public class GameManager : MonoBehaviour
         {
             fogMoving = true;
         }
-
-        UpdateHearts();
+        */
 
         pointsText.text = points.ToString();
 
@@ -235,14 +247,28 @@ public class GameManager : MonoBehaviour
                     {
                         if (keyToChar == upperCaseText[0])
                         {
-                            typedChars = typedChars + untypedChars[0];
                             //typedText.text = typedChars;
-                            untypedChars = untypedChars.Substring(1, untypedChars.Length - 1);
+                            //untypedChars = untypedChars.Substring(1, untypedChars.Length - 1);
+                            typedChars = typedChars + displayedText[0];
+                            //untypedChars = typedChars.Substring(currentCharIndex, 25);
+                            typedText.text = typedChars.Substring(currentTypedIndex + 1, 25);
+                            currentTypedIndex++;
 
-                            highlightedText.transform.position = new Vector2(highlightedText.transform.position.x + 30, highlightedText.transform.position.y);
+                            currentCharIndex++;
+                            displayedText = completeText.Substring(currentCharIndex, 25);
+                            untypedText.text = displayedText;
+                            upperCaseText = displayedText.ToUpper();
+                            currentChar = upperCaseText[0];
 
-                            upperCaseText = untypedChars.ToUpper();
+                            if(currentTypedIndex%25 == 0)
+                            {
+                                playerController.playerRB.transform.Translate(Vector2.right * 50 * Time.deltaTime, Space.World);
+                            }
 
+                            //highlightedText.transform.position = new Vector2(highlightedText.transform.position.x + 30, highlightedText.transform.position.y);
+
+                            //upperCaseText = untypedChars.ToUpper();
+                            /*
                             if (upperCaseText.Length > 0)
                             {
                                 currentChar = upperCaseText[0];
@@ -266,22 +292,23 @@ public class GameManager : MonoBehaviour
                                         //highlightedText.transform.position = new Vector2(highlightedText.transform.position.x - (typedChars.Length * 30), highlightedText.transform.position.y);
                                         //highlight.position = new Vector2(16f, highlight.position.y);
 
-                                        /*
-                                        if (fogMoving)
-                                        {
-                                            playerController.playerLag *= 10;
-                                        }
-                                        */
+                                       
+                                        //if (fogMoving)
+                                        //{
+                                        //    playerController.playerLag *= 10;
+                                        //}
                                     } 
                                 }
                                 highlightedText.transform.position = new Vector2(highlightedText.transform.position.x - (typedChars.Length * 30), highlightedText.transform.position.y);
                                 typedChars = "";
+
                             }
+                            */
 
-                            typedText.text = typedChars;
-                            untypedText.text = untypedChars;
+                            //typedText.text = typedChars;
+                            //untypedText.text = untypedChars;
 
-                            if(keyPressed == KeyCode.Space && canJump)
+                            if (keyPressed == KeyCode.Space && canJump)
                             {
                                 playerController.canJump = true;
                                 points += 100;

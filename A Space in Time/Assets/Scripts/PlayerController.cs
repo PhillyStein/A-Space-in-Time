@@ -9,6 +9,8 @@ public class PlayerController : MonoBehaviour
                 isJumping,
                 isFalling = false;
 
+    private int numOfJumps;
+
     private Vector2 targetPos;
 
     public Rigidbody2D playerRB;
@@ -55,7 +57,7 @@ public class PlayerController : MonoBehaviour
             this.transform.position = new Vector2(this.transform.position.x - playerLag, this.transform.position.y);
         }
 
-        if((playerRB.transform.position.y < -7.5 || playerRB.transform.position.x < -8.5) && !gameOver)
+        if ((playerRB.transform.position.y < -7.5 || playerRB.transform.position.x < -8.5) && !gameOver)
         {
             gameOver = true;
             GameManager.instance.GameOver();
@@ -67,24 +69,44 @@ public class PlayerController : MonoBehaviour
             ground.transform.position = targetPos;
         }
 
-        if(isFalling && isJumping)
+        if (isFalling && isJumping)
         {
             targetPos = new Vector2(ground.transform.position.x - moveSpeed * Time.deltaTime, ground.transform.position.y);
             ground.transform.position = targetPos;
         }
 
-        if(canJump)
+        if (canJump)
         {
             //canMove = false;
             if (playerRB.velocity.y == 0)
             {
-                canJump = false;
+                numOfJumps = 0;
                 isJumping = true;
                 //playerRB.velocity = new Vector2(moveSpeed * jumpHeight * Time.deltaTime, jumpHeight);
-               
+
                 playerRB.AddForce(Vector2.up * jumpHeight, ForceMode2D.Impulse);
+                numOfJumps++;
+                canJump = false;
             }
-            
+            else if (isJumping && numOfJumps < 2)
+            {
+                if (playerRB.velocity.y > 0)
+                {
+                    playerRB.AddForce(Vector2.up * jumpHeight, ForceMode2D.Impulse);
+                } else
+                {
+                    playerRB.AddForce(Vector2.up * (jumpHeight + -playerRB.velocity.y), ForceMode2D.Impulse);
+                }
+                isJumping = true;
+                numOfJumps++;
+                canJump = false;
+            }
+            else
+            {
+                canJump = false;
+                isJumping = false;
+                numOfJumps = 0;
+            }
             //playerRB.AddForce(Vector2.up * jumpHeight, ForceMode2D.Impulse);
         }
 

@@ -7,6 +7,7 @@ public class ScoreKeeper : MonoBehaviour
     public static ScoreKeeper instance;
 
     public int highScore,
+                startChar,
                 startLevel;
 
     public bool isTutorial = true,
