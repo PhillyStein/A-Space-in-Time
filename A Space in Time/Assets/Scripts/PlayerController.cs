@@ -30,6 +30,8 @@ public class PlayerController : MonoBehaviour
 
     public static PlayerController instance;
 
+    public Animator anim;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -40,11 +42,34 @@ public class PlayerController : MonoBehaviour
         playerLag = 0.0001f;
 
         startPos = ground.transform.position;
+
+        /*
+        if (GameManager.instance.gameStarted)
+        {
+            anim.SetBool("playerIdle", true);
+            anim.SetBool("playerRunning", false);
+            anim.SetBool("playerJumping", false);
+        }
+        else
+        {
+            anim.SetBool("playerIdle", false);
+            anim.SetBool("playerRunning", true);
+            anim.SetBool("playerJumping", false);
+        }
+        */
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (isJumping)
+        {
+            //anim.SetBool("playerIdle", false);
+            //anim.SetBool("playerRunning", false);
+            anim.SetBool("playerJumping", true);
+            anim.SetBool("playerJumping", false);
+        }
+
         playerLag = (GameManager.instance.level - 2) * 0.0001f;
 
         if (playerRB.transform.position.x > -4.8f)
@@ -100,13 +125,17 @@ public class PlayerController : MonoBehaviour
                 isJumping = true;
                 numOfJumps++;
                 canJump = false;
+                
             }
             else
             {
                 canJump = false;
                 isJumping = false;
                 numOfJumps = 0;
+
             }
+            anim.SetBool("playerRunning", true);
+            anim.SetBool("playerJumping", false);
             //playerRB.AddForce(Vector2.up * jumpHeight, ForceMode2D.Impulse);
         }
 

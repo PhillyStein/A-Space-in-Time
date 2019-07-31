@@ -154,6 +154,7 @@ public class GameManager : MonoBehaviour
         else if (currentCharIndex > 492)
         {
             gameStarted = true;
+
             canJump = true;
             level = 2;
         }
@@ -311,6 +312,7 @@ public class GameManager : MonoBehaviour
                             if (keyPressed == KeyCode.Space && canJump)
                             {
                                 playerController.canJump = true;
+
                                 points += 100;
                             } else
                             {

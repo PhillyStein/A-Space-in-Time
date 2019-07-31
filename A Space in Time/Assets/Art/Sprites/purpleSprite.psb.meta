@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: bd4152c1d0a855841bd1a4320110445a
+guid: 19cd9ccdf33ffca418b22d6407ed9749
 ScriptedImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -86,7 +86,7 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   mosaicSpriteImportData: []
   rigSpriteImportData:
-  - name: Layer 3
+  - name: Layer 1
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -95,9 +95,9 @@ ScriptedImporter:
       serializedVersion: 2
       x: 4
       y: 4
-      width: 632
-      height: 773
-    spriteID: c0afe77b288484e48980833c539cbbfd
+      width: 1157
+      height: 1514
+    spriteID: 3dd7b7da8feb4974989410d4640d6004
     internalID: 0
     spriteBone: []
     spriteOutline: []
@@ -107,28 +107,28 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     parentGroupIndex: -1
-    uvTransform: {x: -51, y: -52}
+    uvTransform: {x: -44, y: -35}
   platformSettings: []
   mosaicLayers: 1
   documentPivot: {x: 0, y: 0}
   documentAlignment: 7
   importHiddenLayers: 0
-  importedTextureWidth: 1024
-  importedTextureHeight: 1024
-  documentSize: {x: 774, y: 890}
-  textureActualWidth: 1024
-  textureActualHeight: 1024
+  importedTextureWidth: 2048
+  importedTextureHeight: 2048
+  documentSize: {x: 1258, y: 1587}
+  textureActualWidth: 2048
+  textureActualHeight: 2048
   spritePackingTag: 
   resliceFromLayer: 0
   characterMode: 1
   mosaicPSDLayers: []
   rigPSDLayers:
-  - name: Layer 3
-    spriteName: Layer 3
+  - name: Layer 1
+    spriteName: Layer 1
     isGroup: 0
     parentIndex: -1
-    spriteID: c0afe77b288484e48980833c539cbbfd
-    layerID: 8
+    spriteID: 3dd7b7da8feb4974989410d4640d6004
+    layerID: 2
     mosaicPosition: {x: 4, y: 4}
   characterData:
     bones: []
@@ -136,5 +136,5 @@ ScriptedImporter:
     dimension: {x: 0, y: 0}
   boneGOs: []
   generateGOHierarchy: 0
-  textureAssetName: stickman
-  prefabAssetName: stickman_GO
+  textureAssetName: purpleSprite
+  prefabAssetName: purpleSprite_GO
